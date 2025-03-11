@@ -9,16 +9,18 @@ import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Random;
 
 @RestController
 @RequestMapping("/api")
 public class MyController {
 
     ObjectMapper mapper = new ObjectMapper();
-
+    Random rand = new Random();
     @GetMapping("/get")
     public String get() throws JsonProcessingException {
-        System.out.println(mapper.writeValueAsString(new GetResponse()));
+
+        responseTime(1001);
         return mapper.writeValueAsString(new GetResponse());
 
     }
@@ -26,6 +28,16 @@ public class MyController {
     @PostMapping("/post")
     public String post(@RequestBody PostRequest json) throws JsonProcessingException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        responseTime(1001);
         return mapper.writeValueAsString(new PostResponse(json.getLogin(), json.getPassword(), sdf.format(new Date())));
+    }
+
+    private void responseTime(int bound){
+        try{
+            int time = rand.nextInt(bound)+1000;
+            Thread.sleep(time);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }
