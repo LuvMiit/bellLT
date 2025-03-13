@@ -2,9 +2,10 @@ package org.bell.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.bell.pojo.GetResponse;
-import org.bell.pojo.PostRequest;
-import org.bell.pojo.PostResponse;
+import jakarta.validation.Valid;
+import org.bell.model.User;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
@@ -17,19 +18,28 @@ public class MyController {
 
     ObjectMapper mapper = new ObjectMapper();
     Random rand = new Random();
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
     @GetMapping("/get")
-    public String get() throws JsonProcessingException {
+    public ResponseEntity<String> get() {
 
         responseTime(1001);
-        return mapper.writeValueAsString(new GetResponse());
+        return new ResponseEntity<>(
+                "{" +
+                            "\"login\":"+"\"login1\","+
+                            "\"status\":"+"\"ok\""+
+                        "}",
+                HttpStatus.OK
+        );
 
     }
 
     @PostMapping("/post")
-    public String post(@RequestBody PostRequest json) throws JsonProcessingException {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    public ResponseEntity<String> post(@Valid @RequestBody User user) throws JsonProcessingException {
+
+        user.setDate(sdf.format(new Date()));
         responseTime(1001);
-        return mapper.writeValueAsString(new PostResponse(json.getLogin(), json.getPassword(), sdf.format(new Date())));
+        return new ResponseEntity<>(mapper.writeValueAsString(user), HttpStatus.OK);
     }
 
     private void responseTime(int bound){
