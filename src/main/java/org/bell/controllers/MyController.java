@@ -18,10 +18,10 @@ public class MyController {
 
     ObjectMapper mapper = new ObjectMapper();
     Random rand = new Random();
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
 
     @GetMapping("/get")
-    public ResponseEntity<String> get() {
+    public ResponseEntity<?> get() {
 
         responseTime(1001);
         return new ResponseEntity<>(
@@ -35,11 +35,9 @@ public class MyController {
     }
 
     @PostMapping("/post")
-    public ResponseEntity<String> post(@Valid @RequestBody User user) throws JsonProcessingException {
-
-        user.setDate(sdf.format(new Date()));
+    public ResponseEntity<?> post(@Valid @RequestBody User user) {
         responseTime(1001);
-        return new ResponseEntity<>(mapper.writeValueAsString(user), HttpStatus.OK);
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     private void responseTime(int bound){
