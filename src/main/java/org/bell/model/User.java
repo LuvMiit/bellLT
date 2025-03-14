@@ -7,13 +7,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.beans.ConstructorProperties;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Getter
 @Setter
-@NoArgsConstructor
+//@NoArgsConstructor
 public class User {
     @NotBlank
     private String login;
@@ -21,4 +20,19 @@ public class User {
     private String password;
     private String date;
 
+    public User(String login, String password) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        this.login = login;
+        this.password = password;
+        this.date = sdf.format(new Date());
+    }
+
+    @Override
+    public String toString() {
+        return "{"+
+                "\"login\":\"" + login + "\"," +
+                "\"password\":\"" + password + "\"," +
+                "\"date\":\"" + date + "\"" +
+                "}";
+    }
 }
