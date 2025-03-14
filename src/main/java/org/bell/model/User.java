@@ -19,9 +19,9 @@ public class User {
     @NotBlank
     private String password;
     private String date;
+    private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     public User(String login, String password) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         this.login = login;
         this.password = password;
         this.date = sdf.format(new Date());
